@@ -49,7 +49,7 @@ export function SearchBar({
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Your file names"
+                    placeholder="Your file name"
                     {...field}
                     className="text-black"
                   />

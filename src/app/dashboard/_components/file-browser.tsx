@@ -2,13 +2,14 @@
 
 import { useOrganization, useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { UploadButton } from "./upload-button";
-import { FileCard } from "./file-card";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
-import { SearchBar } from "./search-bar";
 import { useState } from "react";
+import { UploadButton } from "@/app/dashboard/_components/upload-button";
+import { api } from "../../../../convex/_generated/api";
+
+import { FileCard } from "@/app/dashboard/_components/file-card";
+import { SearchBar } from "./search-bar";
 
 function Placeholder() {
   return (
@@ -25,7 +26,7 @@ function Placeholder() {
   );
 }
 
-export default function Home() {
+export function FileBrowser({ title }: { title: string }) {
   const organization = useOrganization();
   const user = useUser();
   const [query, setQuery] = useState("");
@@ -37,24 +38,21 @@ export default function Home() {
   const files = useQuery(api.files.getFiles, orgId ? { orgId, query } : "skip");
   const isLoading = files === undefined;
   return (
-    <main className="container mx-auto pt-12">
+    <div className="w-full">
       {isLoading && (
         <div className="flex flex-col gap-6 w-full items-center mt-12">
           <Loader2 className="size-32 animate-spin text-gray-500" />
           <p className="text-2xl">Loading...</p>
         </div>
       )}
-
       {!isLoading && (
         <>
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl font-bold">Your files</h1>
+            <h1 className="text-4xl font-bold">{title}</h1>
             <SearchBar query={query} setQuery={setQuery} />
             <UploadButton />
           </div>
-
           {files.length === 0 && <Placeholder />}
-
           <div className="grid grid-cols-4 gap-4">
             {files?.map((file) => (
               <FileCard key={file._id} file={file} />
@@ -62,6 +60,6 @@ export default function Home() {
           </div>
         </>
       )}
-    </main>
+    </div>
   );
 }
