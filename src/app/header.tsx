@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import {
   OrganizationSwitcher,
   SignInButton,
-  SignOutButton,
+  SignedOut,
   UserButton,
 } from "@clerk/nextjs";
 
@@ -16,11 +16,11 @@ const Header = () => {
         <div className="flex gap-2">
           <OrganizationSwitcher />
           <UserButton />
-          <SignOutButton>
+          <SignedOut>
             <SignInButton>
-              <Button>Sing In</Button>
+              <Button>Sign In</Button>
             </SignInButton>
-          </SignOutButton>
+          </SignedOut>
         </div>
       </div>
     </div>
