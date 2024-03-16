@@ -29,6 +29,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   title: z.string().min(1).max(200),
@@ -42,6 +43,7 @@ export default function Home() {
   const user = useUser();
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,10 +67,23 @@ export default function Home() {
     });
     const { storageId } = await result.json();
 
-    await createFile({ name: values.title, fileId: storageId, orgId });
+    try {
+      await createFile({ name: values.title, fileId: storageId, orgId });
 
-    form.reset();
-    setIsFileDialogOpen(false);
+      form.reset();
+      setIsFileDialogOpen(false);
+      toast({
+        variant: "success",
+        title: "File uploaded",
+        description: "Now everyone can view your file",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: "Your file could not be uploaded, try again later",
+      });
+    }
   }
 
   let orgId: string | undefined = undefined;
@@ -83,7 +98,13 @@ export default function Home() {
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Your files</h1>
 
-        <Dialog open={isFileDialogOpen} onOpenChange={setIsFileDialogOpen}>
+        <Dialog
+          open={isFileDialogOpen}
+          onOpenChange={(isOpen) => {
+            setIsFileDialogOpen(isOpen);
+            form.reset();
+          }}
+        >
           <DialogTrigger asChild>
             <Button onClick={() => {}}>Upload file</Button>
           </DialogTrigger>

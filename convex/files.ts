@@ -30,23 +30,24 @@ export const createFile = mutation({
     orgId: v.string(),
   },
   async handler(ctx, args) {
-    const identity = await ctx.auth.getUserIdentity();
+    throw new Error("You have nto access");
+    // const identity = await ctx.auth.getUserIdentity();
 
-    if (!identity) {
-      throw new ConvexError("You must be logged in to upload a file!");
-    }
+    // if (!identity) {
+    //   throw new ConvexError("You must be logged in to upload a file!");
+    // }
 
-    const hasAccess = hasAccessToOrg(ctx, identity.tokenIdentifier, args.orgId);
+    // const hasAccess = hasAccessToOrg(ctx, identity.tokenIdentifier, args.orgId);
 
-    if (!hasAccess) {
-      throw new ConvexError("You don't have access to this org!");
-    }
+    // if (!hasAccess) {
+    //   throw new ConvexError("You don't have access to this org!");
+    // }
 
-    await ctx.db.insert("files", {
-      name: args.name,
-      orgId: args.orgId,
-      fileId: args.fileId,
-    });
+    // await ctx.db.insert("files", {
+    //   name: args.name,
+    //   orgId: args.orgId,
+    //   fileId: args.fileId,
+    // });
   },
 });
 
