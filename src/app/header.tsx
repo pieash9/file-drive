@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <div className="border-b py-4 bg-gray-50">
       <div className="container mx-auto flex justify-between items-center">
-        <div>
+        <div className="text-xl font-semibold">
           File<span className="text-blue-500">Drive</span>
         </div>
         <div className="flex gap-2">

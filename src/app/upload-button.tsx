@@ -100,7 +100,7 @@ export function UploadButton() {
       }}
     >
       <DialogTrigger asChild>
-        <Button onClick={() => {}}>Upload file</Button>
+        <Button onClick={() => {}}>Upload File</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -118,7 +118,7 @@ export function UploadButton() {
                     <FormItem>
                       <FormLabel>Title</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} className="text-black" />
                       </FormControl>
 
                       <FormMessage />
