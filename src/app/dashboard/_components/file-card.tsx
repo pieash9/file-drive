@@ -33,6 +33,7 @@ import {
   StarHalf,
   StarIcon,
   TrashIcon,
+  UndoIcon,
 } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { useMutation } from "convex/react";
@@ -49,6 +50,7 @@ function FileCardAction({
   isFavorite: boolean;
 }) {
   const deleteFile = useMutation(api.files.deleteFile);
+  const restoreFile = useMutation(api.files.restoreFile);
   const toggleFavorite = useMutation(api.files.toggleFavorite);
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -60,8 +62,8 @@ function FileCardAction({
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
+              This action will mark the file for deletion process. Files are
+              deleted periodically.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -71,8 +73,8 @@ function FileCardAction({
                 await deleteFile({ fileId: file._id });
                 toast({
                   variant: "default",
-                  title: "File deleted",
-                  description: "Your file deleted successfully",
+                  title: "File marked for deleting",
+                  description: "Your file will delete soon",
                 });
               }}
             >
@@ -103,17 +105,29 @@ function FileCardAction({
             {isFavorite ? "Unfavorite" : "Favorite"}
           </DropdownMenuItem>
 
-          {/* <Protect role="org:admin" fallback={<></>}> */}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              setIsConfirmOpen(true);
-            }}
-            className="flex items-center gap-1 text-red-600 cursor-pointer"
-          >
-            <TrashIcon className="size-4" /> Delete
-          </DropdownMenuItem>
-          {/* </Protect> */}
+          <Protect role="org:admin" fallback={<></>}>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                if (file.shouldDelete) {
+                  restoreFile({ fileId: file._id });
+                } else {
+                  setIsConfirmOpen(true);
+                }
+              }}
+              className="flex items-center gap-1 text-red-600 cursor-pointer"
+            >
+              {file.shouldDelete ? (
+                <div className="text-green-600 flex items-center gap-1 ">
+                  <UndoIcon className="size-4" /> Restore
+                </div>
+              ) : (
+                <div className="text-red-600 flex items-center gap-1 ">
+                  <TrashIcon className="size-4" /> Delete
+                </div>
+              )}
+            </DropdownMenuItem>
+          </Protect>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
