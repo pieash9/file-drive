@@ -55,7 +55,7 @@ export const createFile = mutation({
     type: fileTypes,
   },
   async handler(ctx, args) {
-    const hasAccess = hasAccessToOrg(ctx, args.orgId);
+    const hasAccess = await hasAccessToOrg(ctx, args.orgId);
 
     if (!hasAccess) {
       throw new ConvexError("You don't have access to this org!");
@@ -66,6 +66,7 @@ export const createFile = mutation({
       orgId: args.orgId,
       fileId: args.fileId,
       type: args.type,
+      userId: hasAccess.user._id,
     });
   },
 });

@@ -22,10 +22,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
-import { Button } from "@/components/ui/button";
 import {
+  DownloadIcon,
   EllipsisVerticalIcon,
   FileTextIcon,
   GanttChart,
@@ -36,11 +36,12 @@ import {
   UndoIcon,
 } from "lucide-react";
 import { ReactNode, useState } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import { Protect } from "@clerk/nextjs";
+import { formatRelative, subDays } from "date-fns";
 
 function FileCardAction({
   file,
@@ -106,7 +107,7 @@ function FileCardAction({
           </DropdownMenuItem>
 
           <Protect role="org:admin" fallback={<></>}>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem
               onClick={() => {
                 if (file.shouldDelete) {
@@ -128,6 +129,15 @@ function FileCardAction({
               )}
             </DropdownMenuItem>
           </Protect>
+
+          <DropdownMenuItem
+            onClick={() => {
+              window.open(getFileUrl(file.fileId), "_blank");
+            }}
+            className="flex items-center gap-1 cursor-pointer"
+          >
+            <DownloadIcon className="size-4" /> Download
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
@@ -145,6 +155,10 @@ export function FileCard({
   file: Doc<"files">;
   favorites: Doc<"favorites">[];
 }) {
+  const userProfile = useQuery(api.users.getUserProfile, {
+    userId: file.userId,
+  });
+
   const typeIcon = {
     image: <ImageIcon />,
     pdf: <FileTextIcon />,
@@ -156,7 +170,7 @@ export function FileCard({
   return (
     <Card>
       <CardHeader className="relative">
-        <CardTitle className="flex gap-2">
+        <CardTitle className="flex gap-2 text-base font-normal">
           <p>{typeIcon[file.type]}</p> {file.name}
         </CardTitle>
         <div className="absolute top-1 right-1">
@@ -176,14 +190,18 @@ export function FileCard({
         {file.type === "csv" && <GanttChart className="size-20" />}
         {file.type === "pdf" && <FileTextIcon className="size-20" />}
       </CardContent>
-      <CardFooter className="flex items-center justify-center">
-        <Button
-          onClick={() => {
-            window.open(getFileUrl(file.fileId), "_blank");
-          }}
-        >
-          Download
-        </Button>
+      <CardFooter className="flex items-center  gap-2">
+        <div className="flex gap-2 w-40 items-center">
+          <Avatar className="size-8 ">
+            <AvatarImage src={userProfile?.image} />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <span className=" text-gray-700 text-sm">{userProfile?.name}</span>
+        </div>
+        <div className="text-gray-700 text-sm">
+          Uploaded on{" "}
+          {formatRelative(subDays(new Date(file._creationTime), 3), new Date())}
+        </div>
       </CardFooter>
     </Card>
   );

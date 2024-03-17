@@ -68,7 +68,7 @@ export function FileBrowser({
             <UploadButton />
           </div>
           {files && files.length === 0 && <Placeholder />}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {files &&
               files?.map((file) => (
                 <FileCard
