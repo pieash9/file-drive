@@ -30,6 +30,7 @@ import {
   FileTextIcon,
   GanttChart,
   ImageIcon,
+  StarHalf,
   StarIcon,
   TrashIcon,
 } from "lucide-react";
@@ -39,7 +40,13 @@ import { api } from "../../../../convex/_generated/api";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 
-function FileCardAction({ file }: { file: Doc<"files"> }) {
+function FileCardAction({
+  file,
+  isFavorite,
+}: {
+  file: Doc<"files">;
+  isFavorite: boolean;
+}) {
   const deleteFile = useMutation(api.files.deleteFile);
   const toggleFavorite = useMutation(api.files.toggleFavorite);
 
@@ -87,7 +94,12 @@ function FileCardAction({ file }: { file: Doc<"files"> }) {
             }}
             className="flex items-center gap-1 cursor-pointer"
           >
-            <StarIcon className="size-4" /> Favorite
+            {isFavorite ? (
+              <StarIcon className="size-4" />
+            ) : (
+              <StarHalf className="size-4" />
+            )}
+            {isFavorite ? "Unfavorite" : "Favorite"}
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
@@ -110,12 +122,20 @@ function getFileUrl(fileId: Id<"_storage">): string {
   return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${fileId}`;
 }
 
-export function FileCard({ file }: { file: Doc<"files"> }) {
+export function FileCard({
+  file,
+  favorites,
+}: {
+  file: Doc<"files">;
+  favorites: Doc<"favorites">[];
+}) {
   const typeIcon = {
     image: <ImageIcon />,
     pdf: <FileTextIcon />,
     csv: <GanttChart />,
   } as Record<Doc<"files">["type"], ReactNode>;
+
+  const isFavorite = favorites.some((favorite) => favorite.fileId === file._id);
 
   return (
     <Card>
@@ -124,7 +144,7 @@ export function FileCard({ file }: { file: Doc<"files"> }) {
           <p>{typeIcon[file.type]}</p> {file.name}
         </CardTitle>
         <div className="absolute top-1 right-1">
-          <FileCardAction file={file} />
+          <FileCardAction isFavorite={isFavorite} file={file} />
         </div>
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
