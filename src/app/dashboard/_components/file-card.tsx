@@ -92,6 +92,15 @@ function FileCardAction({
         <DropdownMenuContent>
           <DropdownMenuItem
             onClick={() => {
+              window.open(getFileUrl(file.fileId), "_blank");
+            }}
+            className="flex items-center gap-1 cursor-pointer"
+          >
+            <DownloadIcon className="size-4" /> Download
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => {
               toggleFavorite({
                 fileId: file._id,
               });
@@ -107,7 +116,7 @@ function FileCardAction({
           </DropdownMenuItem>
 
           <Protect role="org:admin" fallback={<></>}>
-            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
                 if (file.shouldDelete) {
@@ -129,15 +138,6 @@ function FileCardAction({
               )}
             </DropdownMenuItem>
           </Protect>
-
-          <DropdownMenuItem
-            onClick={() => {
-              window.open(getFileUrl(file.fileId), "_blank");
-            }}
-            className="flex items-center gap-1 cursor-pointer"
-          >
-            <DownloadIcon className="size-4" /> Download
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
