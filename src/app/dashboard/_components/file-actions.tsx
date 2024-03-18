@@ -43,6 +43,7 @@ export function FileCardAction({
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { toast } = useToast();
+  const me = useQuery(api.users.getMe);
   return (
     <>
       <AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
@@ -102,7 +103,16 @@ export function FileCardAction({
             {isFavorite ? "Unfavorite" : "Favorite"}
           </DropdownMenuItem>
 
-          <Protect role="org:admin" fallback={<></>}>
+          <Protect
+            condition={(check) => {
+              return (
+                check({
+                  role: "org:admin",
+                }) || file.userId === me?._id
+              );
+            }}
+            fallback={<></>}
+          >
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
