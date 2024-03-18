@@ -48,11 +48,7 @@ export function SearchBar({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input
-                    placeholder="Your file name"
-                    {...field}
-                    className="text-black"
-                  />
+                  <Input placeholder="Your file name" {...field} />
                 </FormControl>
 
                 <FormMessage />

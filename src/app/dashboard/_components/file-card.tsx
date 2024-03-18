@@ -49,6 +49,7 @@ export function FileCard({
       <CardContent className="h-[200px] flex flex-col justify-center items-center">
         {file.type === "image" && (
           <Image
+            className="rounded"
             src={getFileUrl(file.fileId)}
             width={200}
             height={100}
@@ -64,9 +65,9 @@ export function FileCard({
             <AvatarImage src={userProfile?.image} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <span className=" text-gray-700 text-xs">{userProfile?.name}</span>
+          <span className="  text-xs">{userProfile?.name}</span>
         </div>
-        <div className="text-gray-700 text-xs">
+        <div className=" text-xs">
           Uploaded on {formatRelative(new Date(file._creationTime), new Date())}
         </div>
       </CardFooter>

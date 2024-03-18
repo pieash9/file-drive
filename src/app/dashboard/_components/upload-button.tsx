@@ -130,7 +130,7 @@ export function UploadButton() {
                     <FormItem>
                       <FormLabel>Title</FormLabel>
                       <FormControl>
-                        <Input {...field} className="text-black" />
+                        <Input {...field} />
                       </FormControl>
 
                       <FormMessage />
