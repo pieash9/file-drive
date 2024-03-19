@@ -24,7 +24,7 @@ import {
 const Header = () => {
   const { setTheme } = useTheme();
   return (
-    <div className="border-b py-4 bg-gray-50 dark:bg-[#020817] relative z-10">
+    <div className="border-b-2 py-4  relative z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link
           href="/"
