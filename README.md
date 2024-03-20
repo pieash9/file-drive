@@ -34,14 +34,14 @@ FileDev is a file management system that allows users to upload, delete, downloa
 
 ## Live Demo
 
-[Insert Live Demo Link Here]
+[https://file-drive9.netlify.app]
 
 ## Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
+git clone https://github.com/pieash9/file-drive
 Install dependencies:
 bash
 
