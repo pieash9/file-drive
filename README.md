@@ -26,7 +26,7 @@ FileDev is a file management system that allows users to upload, delete, downloa
 
 - **Tailwind CSS**: Tailwind CSS is a utility-first CSS framework for quickly building custom designs.
 
-- **Shadcn**: (Please provide a brief description of Shadcn if it's not a widely known technology)
+- **Shadcn**: Shadcn is a collection of React components that can be used to create modern web applications with Next.js.
 
 - **Convex**: Convex is a backend service for managing state in Next.js applications.
 
