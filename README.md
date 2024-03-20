@@ -1,4 +1,4 @@
-# FileDev
+# FileDrive
 
 FileDev is a file management system that allows users to upload, delete, download files, and restore deleted files. Deleted files are automatically marked for deletion and removed permanently after three days. Additionally, users can create organizations, add members, and assign roles (admin or member). Admins have the privilege to delete files, while members can only add files but cannot delete them. Currently, the system supports image file types: PNG, PDF, and CSV.
 
