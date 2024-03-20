@@ -20,11 +20,13 @@ export default defineSchema({
   })
     .index("by_orgId", ["orgId"])
     .index("by_shouldDelete", ["shouldDelete"]),
+
   favorites: defineTable({
     fileId: v.id("files"),
     orgId: v.string(),
     userId: v.id("users"),
   }).index("by_userId_orgId_fileId", ["userId", "orgId", "fileId"]),
+
   users: defineTable({
     tokenIdentifier: v.string(),
     name: v.optional(v.string()),
